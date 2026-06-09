@@ -13,7 +13,8 @@ export default function FilterSidebar({
     make: true,
     location: true,
     price: true,
-    keyword: true
+    keyword: true,
+    year: true
   });
 
   const toggleSection = (section) => {
@@ -58,6 +59,13 @@ export default function FilterSidebar({
     }));
   };
 
+  const handleyearChange=(e)=>{
+    setSearchParams(prev => ({
+      ...prev,
+      year: e.target.value
+    }));
+  }
+
   const handleKeywordChange = (e) => {
     setSearchParams(prev => ({
       ...prev,
@@ -74,6 +82,7 @@ export default function FilterSidebar({
       location: 'all',
       priceMin: '',
       priceMax: '',
+      year: '',
       sort: searchParams.sort || 'price-asc'
     });
   };
@@ -257,7 +266,30 @@ export default function FilterSidebar({
           )}
         </div>
 
-        {/* Accordion 5: Keyword */}
+        {/* Accordion 5: Year */}
+        <div className="border-b border-gray-100 pb-4">
+          <button 
+            onClick={() => toggleSection('year')}
+            className="w-full flex items-center justify-between font-bold text-sm text-gray-800 uppercase tracking-wider py-2"
+          >
+            <span>Year</span>
+            <span>{openSections.year ? '▲' : '▼'}</span>
+          </button>
+          {openSections.year && (
+            <div className="mt-3 pl-2">
+              <input
+                type="number"
+                name="year"
+                value={searchParams.year || ''}
+                onChange={handleyearChange}
+                placeholder="e.g. 2024"
+                className="w-full text-xs border border-gray-200 rounded-lg p-2 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Accordion 6: Keyword */}
         <div className="border-b border-gray-100 pb-4">
           <button 
             onClick={() => toggleSection('keyword')}
@@ -266,12 +298,11 @@ export default function FilterSidebar({
             <span>Keyword</span>
             <span>{openSections.keyword ? '▲' : '▼'}</span>
           </button>
-
           {openSections.keyword && (
             <div className="mt-3 pl-2">
               <input
                 type="text"
-                value={searchParams.keyword}
+                value={searchParams.keyword || ''}
                 onChange={handleKeywordChange}
                 placeholder="Search by keywords..."
                 className="w-full text-xs border border-gray-200 rounded-lg p-2 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
@@ -279,6 +310,8 @@ export default function FilterSidebar({
             </div>
           )}
         </div>
+
+       
 
       </div>
 
